@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const App = () => ((
+const App: React.FunctionComponent = () => ((
   <>
     Hello
   </>

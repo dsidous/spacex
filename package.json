@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "parcel index.html --open",
-    "build": "rimraf dist && parcel build index.html"
+    "build": "rimraf dist && parcel build index.html",
+    "test": "jest --watch"
   },
   "keywords": [
     "parcel",
@@ -31,20 +32,28 @@
     "@babel/plugin-syntax-import-meta": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "@types/enzyme": "^3.10.3",
+    "@types/jest": "^24.0.18",
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.1.0",
     "babel-loader": "^8.0.0",
     "babel-plugin-import": "^1.11.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "enzyme-to-json": "^3.4.0",
     "eslint": "^5.13.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jest": "^22.2.2",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
+    "jest": "^24.9.0",
     "parcel-bundler": "^1.8.1",
+    "react-test-renderer": "^16.9.0",
     "rimraf": "^2.6.2",
+    "ts-jest": "^24.0.2",
     "tslint": "^5.19.0",
     "tslint-react": "^4.0.0",
     "typescript": "^3.5.3"
