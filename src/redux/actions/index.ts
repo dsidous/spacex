@@ -1,6 +1,15 @@
 import actionTypes from './actionTypes';
 
+enum apiTypeEnum {
+  dragons,
+  rockets,
+}
+
 const BASE_URL = 'https://api.spacexdata.com/v3/';
+const FETCH_TYPES = {
+  dragons: 'FETCH_DRAGONS',
+  rockets: 'FETCH_ROCKETS',
+};
 
 const request = (type) => ({
   type,
@@ -16,8 +25,8 @@ const failure = (type, error) => ({
   payload: error,
 });
 
-export const fetchApi = (apiType) => async (dispatch) => {
-  const fetchType = `FETCH_${apiType.toUpperCase()}`;
+export const fetchApi = (apiType: apiTypeEnum) => async (dispatch) => {
+  const fetchType = FETCH_TYPES[apiType];
 
   dispatch(request(actionTypes[`${fetchType}_REQUEST`]));
 
