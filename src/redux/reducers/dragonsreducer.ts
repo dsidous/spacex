@@ -1,8 +1,12 @@
-import actionTypes from '../actions/actionTypes';
+import actionTypes, { FetchActionTypes } from '../../types/actions';
+import { DragonsReducer } from '../../types/Dragon';
 
-const initialState = {};
+const initialState = { isFetching: false };
 
-export default (state = initialState, action) => {
+export default (
+  state = initialState,
+  action: FetchActionTypes
+): DragonsReducer => {
   switch (action.type) {
     case actionTypes.FETCH_DRAGONS_REQUEST:
       return {

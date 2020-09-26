@@ -1,17 +1,40 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchApi } from './redux/actions';
+import { fetchDragons, fetchRockets } from './redux/actions';
+import { Dragon } from './types/Dragon';
+import { Rocket } from './types/Rocket';
 
-const tabs = ['dragons', 'rockets'];
+interface Items {
+  dragons: {
+    items: Dragon[];
+    isFetching: boolean;
+  };
+  rockets: {
+    items: Rocket[];
+    isFetching: boolean;
+  };
+}
+
+enum Tabs {
+  dragons = 'dragons',
+  rockets = 'rockets',
+}
+
+const tabs = {
+  dragons: Tabs.dragons,
+  rockets: Tabs.rockets,
+};
 
 const App: React.FC = () => {
-  const [tab, setTab] = React.useState(tabs[0]);
-  const items = useSelector((state) => state[tab].items);
-  const isFetching = useSelector((state) => state[tab].isFetching);
+  const [tab, setTab] = useState(tabs.rockets);
+  const items = useSelector((state: Items) => state[tab].items);
+  const isFetching = useSelector((state: Items) => state[tab].isFetching);
   const dispatch = useDispatch();
 
-  React.useEffect(() => {
-    if (!items || items === []) dispatch(fetchApi(tab));
+  useEffect(() => {
+    if (!items || items === []) {
+      tab === 'dragons' ? dispatch(fetchDragons()) : dispatch(fetchRockets());
+    }
   }, []);
 
   if (isFetching) {
