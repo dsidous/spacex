@@ -1,26 +1,26 @@
-import actionTypes, { FetchActionTypes } from '../../types/actions';
+import { ActionType, FetchRocketsActionTypes } from '../../types/actions';
 import { RocketsReducer } from '../../types/Rocket';
 
-const initialState = { isFetching: false };
+const initialState = { items: '', isFetching: false };
 
 export default (
   state = initialState,
-  action: FetchActionTypes
+  action: FetchRocketsActionTypes
 ): RocketsReducer => {
   switch (action.type) {
-    case actionTypes.FETCH_ROCKETS_REQUEST:
+    case ActionType.FETCH_ROCKETS_REQUEST:
       return {
         ...state,
         isFetching: true,
       };
       break;
-    case actionTypes.FETCH_ROCKETS_FAILURE:
+    case ActionType.FETCH_ROCKETS_FAILURE:
       return {
         ...state,
         isFetching: false,
       };
       break;
-    case actionTypes.FETCH_ROCKETS_SUCCESS:
+    case ActionType.FETCH_ROCKETS_SUCCESS:
       return {
         ...state,
         items: action.payload,

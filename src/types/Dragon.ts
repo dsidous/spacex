@@ -7,6 +7,6 @@ export interface Dragon {
 }
 
 export interface DragonsReducer {
-  items?: Dragon[] | string;
+  items?: Dragon[] | string | null;
   isFetching: boolean;
 }

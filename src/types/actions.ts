@@ -18,49 +18,77 @@ export default {
   FETCH_ROCKETS_SUCCESS,
 };
 
-interface FetchDragonsRequestAction {
-  type: typeof FETCH_DRAGONS_REQUEST;
-  payload: null;
+export enum ActionType {
+  FETCH_DRAGONS_REQUEST,
+  FETCH_DRAGONS_FAILURE,
+  FETCH_DRAGONS_SUCCESS,
+  FETCH_ROCKETS_REQUEST,
+  FETCH_ROCKETS_FAILURE,
+  FETCH_ROCKETS_SUCCESS,
+}
+
+export interface FetchDragonsRequestAction {
+  type: ActionType.FETCH_DRAGONS_REQUEST;
+  payload?: null;
 }
 
 interface FetchDragonsFailureAction {
-  type: typeof FETCH_DRAGONS_FAILURE;
-  payload: string;
+  type: ActionType.FETCH_DRAGONS_FAILURE;
+  payload?: string;
 }
 
 interface FetchDragonsSuccessAction {
-  type: typeof FETCH_DRAGONS_SUCCESS;
-  payload: Dragon[];
+  type: ActionType.FETCH_DRAGONS_SUCCESS;
+  payload?: Dragon[];
 }
 
-interface FetchRocketsRequestAction {
-  type: typeof FETCH_ROCKETS_REQUEST;
-  payload: null;
+export interface FetchRocketsRequestAction {
+  type: ActionType.FETCH_ROCKETS_REQUEST;
+  payload?: null;
 }
 
 interface FetchRocketsFailureAction {
-  type: typeof FETCH_ROCKETS_FAILURE;
-  payload: string;
+  type: ActionType.FETCH_ROCKETS_FAILURE;
+  payload?: string;
 }
 
 interface FetchRocketsSuccessAction {
-  type: typeof FETCH_ROCKETS_SUCCESS;
-  payload: Rocket[];
+  type: ActionType.FETCH_ROCKETS_SUCCESS;
+  payload?: Rocket[];
 }
 
-export type FetchActionTypes =
+export type SuccessTypes =
+  | FetchRocketsSuccessAction
+  | FetchDragonsSuccessAction;
+
+export type RequestTypes =
+  | FetchRocketsRequestAction
+  | FetchDragonsRequestAction;
+
+export type FailureTypes =
+  | FetchRocketsFailureAction
+  | FetchDragonsFailureAction;
+
+export type FetchDragonsActionTypes =
   | FetchDragonsFailureAction
   | FetchDragonsRequestAction
-  | FetchDragonsSuccessAction
+  | FetchDragonsSuccessAction;
+
+export type FetchRocketsActionTypes =
   | FetchRocketsFailureAction
   | FetchRocketsRequestAction
   | FetchRocketsSuccessAction;
 
-export type AppActions = FetchActionTypes;
-export type AppActionTypes =
-  | FETCH_DRAGONS_REQUEST
-  | FETCH_DRAGONS_FAILURE
-  | FETCH_DRAGONS_SUCCESS
-  | FETCH_ROCKETS_REQUEST
-  | FETCH_ROCKETS_FAILURE
-  | FETCH_ROCKETS_SUCCESS;
+export type AppActions = FetchRocketsActionTypes | FetchDragonsActionTypes;
+
+export type DragonsActionTypes =
+  | typeof FETCH_DRAGONS_REQUEST
+  | typeof FETCH_DRAGONS_FAILURE
+  | typeof FETCH_DRAGONS_SUCCESS;
+
+export type RocketsActionTypes =
+  | typeof FETCH_ROCKETS_REQUEST
+  | typeof FETCH_ROCKETS_FAILURE
+  | typeof FETCH_ROCKETS_SUCCESS;
+
+export type AppActionTypes = DragonsActionTypes | RocketsActionTypes;
