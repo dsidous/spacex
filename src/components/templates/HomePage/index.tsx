@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createUseStyles } from 'react-jss';
 
+import Details from '../../molecules/Details';
 import { fetchDragons, fetchRockets } from '../../../redux/actions';
 
 import { Dragon } from '../../../types/Dragon';
 import { Rocket } from '../../../types/Rocket';
+
+type TItem = Dragon & Rocket & { gridPosition?: number };
 
 interface Items {
   dragons: {
@@ -23,10 +26,12 @@ enum Tabs {
   rockets = 'rockets',
 }
 
-const tabs = {
+const TABS = {
   dragons: Tabs.dragons,
   rockets: Tabs.rockets,
 };
+
+const COLUMNS = 2;
 
 const useStyles = createUseStyles({
   page: {
@@ -37,7 +42,7 @@ const useStyles = createUseStyles({
   grid: {
     display: 'grid',
     gap: '20px',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: `repeat(${COLUMNS}, 1fr)`,
 
     '& figure': {
       height: '100%',
@@ -68,7 +73,9 @@ const useStyles = createUseStyles({
 
 const HomePage: React.FC = () => {
   const classes = useStyles();
-  const [tab, setTab] = useState(tabs.rockets);
+  const [tab, setTab] = useState(TABS.rockets);
+  const [details, setDetails] = useState<TItem | null>(null);
+
   const items = useSelector((state: Items) => state[tab].items);
   const isFetching = useSelector((state: Items) => state[tab].isFetching);
   const dispatch = useDispatch();
@@ -77,7 +84,17 @@ const HomePage: React.FC = () => {
     if (!items || items.length === 0) {
       tab === 'dragons' ? dispatch(fetchDragons()) : dispatch(fetchRockets());
     }
+    setDetails(null);
   }, [tab]);
+
+  const showDetails = (item: TItem, index: number) => {
+    const gridPosition = index - (index % COLUMNS) + COLUMNS;
+
+    setDetails({
+      ...item,
+      gridPosition,
+    });
+  };
 
   if (isFetching) {
     return <div>...loading</div>;
@@ -87,26 +104,39 @@ const HomePage: React.FC = () => {
     <div className={classes.page}>
       <div className={classes.grid}>
         <div style={{ justifyContent: 'flex-end', display: 'flex' }}>
-          <button onClick={() => setTab(Tabs.dragons)}>Dragons</button>
+          <button onClick={() => setTab(TABS.dragons)}>Dragons</button>
         </div>
         <div>
-          <button onClick={() => setTab(Tabs.rockets)}>Rockets</button>
+          <button onClick={() => setTab(TABS.rockets)}>Rockets</button>
         </div>
         {items &&
-          (items as (Dragon & Rocket)[]).map((item) => (
-            <div key={item.id} className={classes.cell}>
-              <figure>
-                <img
-                  src={item.flickr_images[0]}
-                  alt={item.name || item.rocket_name}
-                />
-              </figure>
+          (items as TItem[]).map((item, index) => (
+            <>
+              {details && details.gridPosition === index && (
+                <Details details={details} />
+              )}
 
-              <div className={classes.title}>
-                {item.name || item.rocket_name}
+              <div
+                key={item.id}
+                className={classes.cell}
+                onClick={() => showDetails(item, index)}
+              >
+                <figure>
+                  <img
+                    src={item.flickr_images[0]}
+                    alt={item.name || item.rocket_name}
+                  />
+                </figure>
+
+                <div className={classes.title}>
+                  {item.name || item.rocket_name}
+                </div>
               </div>
-            </div>
+            </>
           ))}
+        {details && details.gridPosition === items.length && (
+          <Details details={details} />
+        )}
       </div>
     </div>
   );
